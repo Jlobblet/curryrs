@@ -36,7 +36,7 @@ fn main() {
     Ok(_) => {
       // Only link this if the build artifact exists
       if PathBuf::from("../haskell/htest/dist-newstyle").exists() {
-        println!("cargo:rustc-link-search=native=../haskell/htest/dist-newstyle/build/x86_64-osx/ghc-8.8.3/htest-0.1.0.0/build/");
+        println!("cargo:rustc-link-search=native=../haskell/htest/dist-newstyle/build/x86_64-linux/ghc-8.10.7/htest-0.1.0.0/build");
         println!("cargo:rustc-link-lib=static=HShtest-0.1.0.0-inplace");
       }
 
