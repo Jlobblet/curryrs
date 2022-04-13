@@ -1,4 +1,5 @@
 use std::{env, error::Error, path::PathBuf, process::Command, str};
+use std::path::Path;
 use walkdir::WalkDir;
 
 fn command_output(cmd: &mut Command) -> String {
@@ -107,12 +108,11 @@ fn link_ghc_libs() -> Result<(), Box<dyn Error>> {
         .unwrap()
         .to_owned();
 
-        println!("cargo:rustc-link-search=native={}", lib_path);
-        // Get rid of lib from the file name
-        let temp = file_name.split_at(3).1;
+        println!("cargo:rustc-link-search=native={}", &lib_path);
         // Get rid of the .so from the file name
-        let trimmed = temp.split_at(temp.len() - DYLIB_EXTENSION.len()).0;
-        println!("cargo:rustc-link-lib=static={}", trimmed);
+        let trimmed = Path::new(file_name).file_stem().unwrap().to_str().unwrap();
+        // Get rid of lib from the file name
+        println!("cargo:rustc-link-lib=static={}", &trimmed[3..]);
       }
       _ => panic!("Unable to link GHC libs at all"),
     }
