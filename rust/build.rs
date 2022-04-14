@@ -68,7 +68,11 @@ fn main() {
 
 fn link_ghc_libs() -> Result<(), Box<dyn Error>> {
   std::env::set_current_dir("../haskell")?;
-  let builder = "cabal";
+  let builder = if command_ok(Command::new("stack").arg("--version")) {
+    "stack"
+  } else {
+    "cabal"
+  };
 
   // Go to the libdir for ghc then traverse all the entries
   for entry in WalkDir::new(&ghc(builder, "--print-libdir"))
